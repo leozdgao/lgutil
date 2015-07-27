@@ -1,0 +1,22 @@
+{
+  "name": "lgutil",
+  "version": "0.1.0",
+  "description": "util function",
+  "main": "index.js",
+  "scripts": {
+    
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leozdgao/lgutil.git"
+  },
+  "keywords": [
+    "utility"
+  ],
+  "author": "leozdgao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leozdgao/lgutil/issues"
+  },
+  "homepage": "https://github.com/leozdgao/lgutil#readme"
+}
