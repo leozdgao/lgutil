@@ -35,7 +35,7 @@ module.exports = {
     target[addEventMethod](eventType, callback, false);
 
     return {
-      remove() {
+      remove: function() {
         target[removeEventMethod](eventType, callback, false);
       }
     };
