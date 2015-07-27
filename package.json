@@ -1,6 +1,6 @@
 {
   "name": "lgutil",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "util function",
   "main": "index.js",
   "scripts": {
