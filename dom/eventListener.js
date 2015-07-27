@@ -2,6 +2,8 @@ var ie = !document.addEventListener;
 var addEventMethod = ie ? 'attachEvent': 'addEventListener';
 var removeEventMethod = ie ? 'detachEvent': 'removeEventListener';
 
+var currentFocusListener;
+
 module.exports = {
   listen: function (target, eventType, callback) {
     /**
@@ -11,7 +13,7 @@ module.exports = {
      * We only allow one Listener at a time to avoid stack overflows
      */
     if(eventType == 'focus') {
-      var currentFocusListener, remove;
+      var remove;
       if(currentFocusListener) currentFocusListener.remove();
 
       if (ie) {
