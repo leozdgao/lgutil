@@ -17,12 +17,12 @@ module.exports = {
       if(currentFocusListener) currentFocusListener.remove();
 
       if (ie) {
-        document.attachEvent('onfocusin', handler);
-        remove = function() { document.detachEvent('onfocusin', handler); };
+        document.attachEvent('onfocusin', callback);
+        remove = function() { document.detachEvent('onfocusin', callback); };
       }
       else { // chrome/ff, use event capture to simulate this event
-        document.addEventListener('focus', handler, true);
-        remove = function() { document.removeEventListener('focus', handler, true); };
+        document.addEventListener('focus', callback, true);
+        remove = function() { document.removeEventListener('focus', callback, true); };
       }
 
       currentFocusListener = { remove: remove };
