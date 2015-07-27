@@ -1,10 +1,10 @@
 {
   "name": "lgutil",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "util function",
   "main": "index.js",
   "scripts": {
-    
+
   },
   "repository": {
     "type": "git",
