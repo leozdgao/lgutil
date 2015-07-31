@@ -3,9 +3,7 @@
   "version": "0.1.5",
   "description": "util function",
   "main": "index.js",
-  "scripts": {
-
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/leozdgao/lgutil.git"
@@ -18,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/leozdgao/lgutil/issues"
   },
-  "homepage": "https://github.com/leozdgao/lgutil#readme"
+  "homepage": "https://github.com/leozdgao/lgutil#readme",
+  "dependencies": {
+    "promise-polyfill": "^2.1.0"
+  }
 }
