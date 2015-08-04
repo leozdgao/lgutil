@@ -1,7 +1,7 @@
 var Promise = require('promise-polyfill')
 
 var isDefined = function(val) { return val != null }
-var ajax = asyncRequest = function(opts, fulfill, reject) {
+var ajax = function(opts, fulfill, reject) {
   opts = opts || {}
 
   var url = opts.url, body = opts.body, headers = opts.headers,
@@ -57,7 +57,7 @@ var ajax = asyncRequest = function(opts, fulfill, reject) {
 
 ajax.promise = function(opts) {
   return new Promise(function(resolve, reject) {
-    asyncRequest(opts, resolve, reject)
+    ajax(opts, resolve, reject)
   })
 }
 
