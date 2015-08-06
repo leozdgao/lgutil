@@ -3,5 +3,5 @@ module.exports = {
   offset: require('./offset'),
   contains: require('./contains'),
   position: require('./position'),
-  eventListener: require('./eventListener');
+  eventListener: require('./eventListener')
 }

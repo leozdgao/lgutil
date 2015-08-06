@@ -419,17 +419,17 @@ var KeyCode = {
    * WIN_IME
    */
   WIN_IME: 229
-};
+}
 
 /*
  whether text and modified key is entered at the same time.
  */
 KeyCode.isTextModifyingKeyEvent = function (e) {
-  var keyCode = e.keyCode;
+  var keyCode = e.keyCode
   if (e.altKey && !e.ctrlKey || e.metaKey ||
       // Function keys don't generate text
     keyCode >= KeyCode.F1 && keyCode <= KeyCode.F12) {
-    return false;
+    return false
   }
 
   // The following keys are quite harmless, even in combination with
@@ -458,11 +458,11 @@ KeyCode.isTextModifyingKeyEvent = function (e) {
     case KeyCode.UP:
     case KeyCode.WIN_KEY:
     case KeyCode.WIN_KEY_RIGHT:
-      return false;
+      return false
     default:
-      return true;
+      return true
   }
-};
+}
 
 /*
  whether character is entered.
@@ -470,22 +470,22 @@ KeyCode.isTextModifyingKeyEvent = function (e) {
 KeyCode.isCharacterKey = function (keyCode) {
   if (keyCode >= KeyCode.ZERO &&
     keyCode <= KeyCode.NINE) {
-    return true;
+    return true
   }
 
   if (keyCode >= KeyCode.NUM_ZERO &&
     keyCode <= KeyCode.NUM_MULTIPLY) {
-    return true;
+    return true
   }
 
   if (keyCode >= KeyCode.A &&
     keyCode <= KeyCode.Z) {
-    return true;
+    return true
   }
 
   // Safari sends zero key code for non-latin characters.
   if (window.navigator.userAgent.indexOf('WebKit') !== -1 && keyCode === 0) {
-    return true;
+    return true
   }
 
   switch (keyCode) {
@@ -506,10 +506,10 @@ KeyCode.isCharacterKey = function (keyCode) {
     case KeyCode.OPEN_SQUARE_BRACKET:
     case KeyCode.BACKSLASH:
     case KeyCode.CLOSE_SQUARE_BRACKET:
-      return true;
+      return true
     default:
-      return false;
+      return false
   }
-};
+}
 
-module.exports = KeyCode;
+module.exports = KeyCode
