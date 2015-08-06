@@ -484,7 +484,7 @@ KeyCode.isCharacterKey = function (keyCode) {
   }
 
   // Safari sends zero key code for non-latin characters.
-  if (window.navigation.userAgent.indexOf('WebKit') !== -1 && keyCode === 0) {
+  if (window.navigator.userAgent.indexOf('WebKit') !== -1 && keyCode === 0) {
     return true;
   }
 
