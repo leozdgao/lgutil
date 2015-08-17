@@ -1,6 +1,6 @@
 {
   "name": "lgutil",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "util function",
   "main": "index.js",
   "scripts": {},
@@ -19,5 +19,8 @@
   "homepage": "https://github.com/leozdgao/lgutil#readme",
   "dependencies": {
     "promise-polyfill": "^2.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^1.1.0"
   }
 }
