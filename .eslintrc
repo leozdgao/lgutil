@@ -18,7 +18,7 @@
 
     # Best practice
     curly: [2,  multi-line]
-    eqeqeq: 1
+    eqeqeq: [1, smart]
     no-loop-func: 2
     no-alert: 2
     yoda: [2, never]

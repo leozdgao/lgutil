@@ -1,101 +1,103 @@
 var Promise = require('promise-polyfill')
+var forEach = require('lodash/collection/forEach')
+var assign = require('lodash/object/assign')
 
 var isDefined = function (val) { return val != null }
-var ajax = function (opts, fulfill, reject) {
-  opts = opts || {}
 
-  var url = opts.url, body = opts.body, headers = opts.headers,
-    method = opts.method || 'GET', timeout = opts.timeout || 5000
+function request (opts) {
+  var url = opts.url
+  if (!isDefined(url)) throw new Error('Request need an URL.')
+
+  var method = opts.method || 'GET'
+  var headers = opts.headers || {}
+  var body = opts.body
+  var timeout = opts.timeout || 5000
+  var withCredentials = opts.withCredentials || false
 
   var xhr = new XMLHttpRequest()
-  xhr.open(method, url)
-  xhr.withCredentials = !!opts.withCredentials
-  for (var key in headers) if (headers.hasOwnProperty(key)) {
-    xhr.setRequestHeader(key, headers[key])
+  var getHeaders = function () {
+    return xhr.getAllResponseHeaders().split('\n')
+      .reduce(function (header, entry) {
+        var temp = entry.split(': ')
+        var k = temp[0], v = temp[1]
+        if (k && v) header[k] = v
+        return header
+      }, {})
   }
-  if (timeout > 0) {
-    if (isDefined(xhr.timeout)) {
-      xhr.timeout = timeout
-      xhr.ontimeout = function () {
-        xhr.hasTimeout = true
-        reject({ timeout: true })
+
+  var fetch = new Promise(function (resolve, reject) {
+    xhr.open(method, url)
+    forEach(headers, function (val, key) {
+      xhr.setRequestHeader(key, val)
+    })
+
+    // hadnle timeout
+    if (timeout > 0) {
+      if (isDefined(xhr.timeout)) {
+        xhr.timeout = timeout
+        xhr.ontimeout = function () {
+          xhr.hasTimeout = true
+          reject({ type: 'timeout' })
+        }
+      }
+      else {
+        setTimeout(function () {
+          xhr.abort()
+          xhr.hasTimeout = true
+        }, timeout)
       }
     }
-    else {
-      setTimeout(function () {
-        xhr.abort()
-        xhr.hasTimeout = true
-      }, timeout)
-    }
-  }
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) {
-      var res
-      try {
-        res = xhr.response && JSON.parse(xhr.response)
+
+    // handle response
+    xhr.onload = function () {
+      var status = xhr.status
+      var response = {
+        status: status,
+        headers: getHeaders(),
+        body: xhr.response || xhr.responseText
       }
-      catch(e) { res = xhr.response }
 
-      if (/^(?:2\d{2}|304)$/.test(xhr.status)) {
-        fulfill(res)
+      if (/^2|304/.test(status)) resolve(response)
+      else {
+        response.type = 'error'
+        reject(response)
       }
-      else reject(res)
     }
+    xhr.onerror = function () {
+      reject({
+        type: 'error',
+        status: xhr.status,
+        headers: getHeaders(),
+        body: xhr.response || xhr.responseText
+      })
+    }
+    xhr.onabort = function () {
+      reject({ type: xhr.hasTimeout? 'timeout': 'abort' })
+    }
+    xhr.withCredentials = withCredentials
+    xhr.send(body)
+  })
+
+  return {
+    then: fetch.then.bind(fetch),
+    catch: fetch.catch.bind(fetch),
+    abort: xhr.abort.bind(xhr) // abortable
   }
-  xhr.onabort = function () {
-    reject({ abort: true })
+}
+
+[ 'get', 'post', 'put', 'delete' ].forEach(function (method) {
+  request[method] = function (url, body, opts) {
+    if (method === 'get') {
+      opts = body
+      body = void 0
+    }
+
+    return request(assign({
+      url: url,
+      method: method.toUpperCase(),
+      body: body
+    }, opts))
   }
+})
 
-  if (FormData && body instanceof FormData) xhr.send(body)
-  else {
-    xhr.setRequestHeader("Content-Type", "application/json")
-    xhr.send(JSON.stringify(body))
-  }
-
-  return xhr
-}
-
-ajax.promise = function (opts) {
-  return new Promise(function (resolve, reject) {
-    ajax(opts, resolve, reject)
-  })
-}
-
-ajax.get = function (url, headers, timeout) {
-  return ajax.promise({
-    url: url,
-    headers: headers,
-    timeout: timeout
-  })
-}
-
-ajax.post = function (url, body, headers, timeout) {
-  return ajax.promise({
-    method: 'POST',
-    url: url,
-    body: body,
-    headers: headers,
-    timeout: timeout
-  })
-}
-
-ajax.put = function (url, body, headers, timeout) {
-  return ajax.promise({
-    method: 'PUT',
-    url: url,
-    body: body,
-    headers: headers,
-    timeout: timeout
-  })
-}
-
-ajax.delete = function (url, headers, timeout) {
-  return ajax.promise({
-    method: 'DELETE',
-    url: url,
-    headers: headers,
-    timeout: timeout
-  })
-}
-
-module.exports = ajax
+module.exports = request
