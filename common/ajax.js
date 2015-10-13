@@ -95,6 +95,8 @@ function request (opts) {
   }
 }
 
+request.json = {};
+
 [ 'get', 'post', 'put', 'delete' ].forEach(function (method) {
   request[method] = function (url, body, headers, opts) {
     if (method === 'get') {
