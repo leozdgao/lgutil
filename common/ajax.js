@@ -51,10 +51,20 @@ function request (opts) {
     // handle response
     xhr.onload = function () {
       var status = xhr.status
+      var headers = getHeaders()
+      var body = xhr.response || xhr.responseText
+      var contentType = headers['Content-Type']
+      if (contentType && contentType.indexOf('json') > -1) {
+        try {
+          body = JSON.parse(body)
+        }
+        catch(e) { }
+      }
+
       var response = {
         status: status,
-        headers: getHeaders(),
-        body: xhr.response || xhr.responseText
+        headers: headers,
+        body: body
       }
 
       if (/^2|304/.test(status)) resolve(response)
@@ -86,16 +96,38 @@ function request (opts) {
 }
 
 [ 'get', 'post', 'put', 'delete' ].forEach(function (method) {
-  request[method] = function (url, body, opts) {
+  request[method] = function (url, body, headers, opts) {
     if (method === 'get') {
-      opts = body
+      opts = headers
+      headers = body
       body = void 0
     }
 
     return request(assign({
       url: url,
       method: method.toUpperCase(),
-      body: body
+      body: body,
+      headers: headers
+    }, opts))
+  }
+
+  request.json[method] = function (url, body, headers, opts) {
+    if (method === 'get') {
+      opts = headers
+      headers = body
+      body = void 0
+    }
+
+    headers = headers || {}
+    headers['Content-Type'] = 'application/json'
+
+    body = JSON.stringify(body)
+
+    return request(assign({
+      url: url,
+      method: method.toUpperCase(),
+      body: body,
+      headers: headers
     }, opts))
   }
 })
