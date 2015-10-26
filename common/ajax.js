@@ -53,7 +53,7 @@ function request (opts) {
       var status = xhr.status
       var headers = getHeaders()
       var body = xhr.response || xhr.responseText
-      var contentType = headers['Content-Type']
+      var contentType = headers['Content-Type'] || headers['content-type']
       if (contentType && contentType.indexOf('json') > -1) {
         try {
           body = JSON.parse(body)
