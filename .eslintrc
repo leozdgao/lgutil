@@ -1,7 +1,15 @@
 ---
   env:
+    es6: true
     browser: true
     node: true
+
+  parser: babel-eslint
+
+  ecmaFeatures:
+    modules: true
+    jsx: true
+    experimentalObjectRestSpread: true
 
   rules:
     # Stylistic issue
@@ -22,6 +30,15 @@
     no-loop-func: 2
     no-alert: 2
     yoda: [2, never]
+
+    # ES6
+    arrow-spacing : 2
+    no-var: 2
+    prefer-const: 2
+    object-shorthand: 1
+    constructor-super: 2
+    no-this-before-super: 2
+    generator-star-spacing: 2
 
     # Variables
     no-use-before-define: [2, nofunc]

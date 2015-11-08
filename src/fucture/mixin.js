@@ -5,7 +5,7 @@ export default function mixin (behaviour, sharedBehaviour = {}) {
 
   // return a class decorator
   function _mixin (klass) {
-    for (let property of instanceKeys) {
+    for (const property of instanceKeys) {
       Object.defineProperty(klass.prototype, property, { value: behaviour[property] })
     }
     Object.defineProperty(klass.prototype, typeTag, { value: true })
@@ -13,7 +13,7 @@ export default function mixin (behaviour, sharedBehaviour = {}) {
     return klass
   }
 
-  for (let property of instanceKeys) {
+  for (const property of instanceKeys) {
     Object.defineProperty(_mixin, property, {
       value: sharedBehaviour[property],
       enumerable: sharedBehaviour.propertyIsEnumerable(property)
@@ -24,7 +24,7 @@ export default function mixin (behaviour, sharedBehaviour = {}) {
     value: (instance) => {
       return !!instance[typeTag]
     }
-  });
+  })
 
   return _mixin
 }
