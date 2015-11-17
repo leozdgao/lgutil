@@ -5,7 +5,7 @@ const valIterator = (cols) => {
     next () {
       i++ // inc
       if (i >= keys.length) return null
-      else return cols[keys[i]]
+      else return keys[i]
     }
   }
 }
