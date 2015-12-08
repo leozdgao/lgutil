@@ -1,5 +1,5 @@
 export default function throttle (fn, delay = 250, options = {}) {
-  const { tailing = false } = options
+  const { tailing = true } = options
   let last, timer
   return function () {
     const exe = _ => {
@@ -10,10 +10,12 @@ export default function throttle (fn, delay = 250, options = {}) {
     // check expired
     const now = +new Date()
     if (last && last + delay > now) {
-      clearTimeout(timer)
-      timer = setTimeout(_ => {
-        exe()
-      }, delay)
+      if (tailing) {
+        clearTimeout(timer)
+        timer = setTimeout(_ => {
+          exe()
+        }, delay)
+      }
     }
     else exe()
   }
