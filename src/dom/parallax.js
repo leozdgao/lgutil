@@ -6,7 +6,7 @@ export default function parallax (speedFactor) {
     // here will trigger layout if DOM is invalidate
     const styles = window.getComputedStyle(elem)
     const bkgPosition = styles['background-position']
-    const [ bpX, bpY ] = bkgPosition.split(' ')
+    let [ bpX, bpY ] = bkgPosition.split(' ')
 
     if (bpY.slice(-1) === '%') {
       console.warn('Dont support value of background-position-y is a percentage. Take it as 0px')
