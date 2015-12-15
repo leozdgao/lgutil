@@ -23,7 +23,7 @@ export default function parallax (speedFactor) {
       const rect = elem.getBoundingClientRect()
 
       // users can't see this element
-      if (isInViewport()) return
+      if (isInViewport(elem)) return
 
       elem.style['backgroundPosition'] = bpX + " " + (parseInt(bpY) + Math.round((top - pos) * speedFactor)) + "px"
     }
